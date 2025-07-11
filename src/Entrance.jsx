@@ -1,6 +1,18 @@
-/** Users can enter their name to receive a token from the API. */
+/** Users can enter their name to receive a token from the API. Track users name
+ * 2)  call signup (name) when the form is submitted.
+ * useAuth gives access to signup
+ */
+import { useState } from "react";
+import { useAuth } from "./AuthContext";
+
 export default function Entrance() {
-  // TODO: call signup when form is submitted
+  const [name, setName] = useState("");
+  const { signup } = useAuth();
+
+  async function handleSubmit(event) {
+    event.preventDefault();
+    await signup(name); // from index demo
+  }
 
   return (
     <>
@@ -15,12 +27,16 @@ export default function Entrance() {
         fixed on you. The one on the left opens its mouth, and with a deep,
         rumbling voice, it asks, "Who approaches? Speak your name."
       </p>
-      <form>
+      <form onSubmit={handleSubmit}>
         <label>
           Name
-          <input name="name" />
+          <input
+            name="name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
         </label>
-        <button>Respond</button>
+        <button type="submit">Respond</button>
       </form>
     </>
   );
